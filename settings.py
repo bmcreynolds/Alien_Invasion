@@ -10,6 +10,7 @@ class Settings:
 
 		"""Ship settings"""
 		self.ship_speed = 6
+		self.ship_limit = 3
 
 		"""Bullet settings"""
 		self.bullet_speed = 2
