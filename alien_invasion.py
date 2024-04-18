@@ -8,6 +8,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
+from button import Button
 
 class AlienInvasion:
 	###Overall class to manage the game assets and behavior###
@@ -30,13 +31,19 @@ class AlienInvasion:
 
 		self._create_fleet()
 
+		# Make the play button
+		self.play_button = Button(self, "Play")
+
 	def run_game(self):
 		###Start the main loop for the game and runs helper methods defined below###
 		while True:
 			self._check_events()
-			self.ship.update()
-			self._update_bullets()	
-			self._update_aliens()
+
+			if self.stats.game_active:
+				self.ship.update()
+				self._update_bullets()	
+				self._update_aliens()
+				
 			self._update_screen()
 
 	def _check_events(self):
@@ -48,6 +55,26 @@ class AlienInvasion:
 				self._check_keydown_events(event)
 			elif event.type == pygame.KEYUP:
 				self._check_keyup_events(event)
+			# Start game if mouse is clicked over 'play' button
+			elif event.type == pygame.MOUSEBUTTONDOWN:
+				mouse_pos = pygame.mouse.get_pos()
+				self._check_play_button(mouse_pos)
+
+	def _check_play_button(self, mouse_pos):
+		'''Check if the posistion of the mouse is inside the play button'''
+		if self.play_button.rect.collidepoint(mouse_pos):
+			# Reset game stats to start again.
+			self.stats.reset_stats()
+			
+			self.stats.game_active = True
+
+			# Get rid of aliens and bullets
+			self.aliens.empty()
+			self.bullets.empty()
+			
+			# Create a new fleet and center the ship
+			self._create_fleet()
+			self.ship.center_ship()
 			
 
 	def _check_keydown_events(self, event):
@@ -175,6 +202,11 @@ class AlienInvasion:
 			bullet.draw_bullet()
 		# Draw some aliends
 		self.aliens.draw(self.screen)
+
+		# Draw the play button if the game is not active
+		if not self.stats.game_active:
+			self.play_button.draw_button()
+		
 		# Make the most recently drawn screen visible.
 		pygame.display.flip()
 

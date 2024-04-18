@@ -7,8 +7,8 @@ class GameStats:
         self.settings = ai_game.settings
         self.reset_stats()
 
-        # Determines if the game is still going or not, changes to false on game over
-        self.game_active = True
+        # Starts game in an inactive state
+        self.game_active = False
 
     def reset_stats(self):
         '''Initialize stats that can be changed during the game'''
