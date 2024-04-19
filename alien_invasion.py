@@ -62,9 +62,12 @@ class AlienInvasion:
 
 	def _check_play_button(self, mouse_pos):
 		'''Check if the posistion of the mouse is inside the play button'''
-		if self.play_button.rect.collidepoint(mouse_pos):
+		button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+		if button_clicked and not self.stats.game_active:
 			# Reset game stats to start again.
 			self.stats.reset_stats()
+			# Reset speeds to original values
+			self.settings.initialize_dynamic_settings()
 			
 			self.stats.game_active = True
 
@@ -75,6 +78,9 @@ class AlienInvasion:
 			# Create a new fleet and center the ship
 			self._create_fleet()
 			self.ship.center_ship()
+
+			# Hide the mouse
+			pygame.mouse.set_visible(False)
 			
 
 	def _check_keydown_events(self, event):
@@ -119,11 +125,14 @@ class AlienInvasion:
 		# Check for collisions
 		collions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 		
-		# Check if there are any mor alien in the fleet
+		# Check if there are any more alien in the fleet
 		if not self.aliens:
 			# Destroy the remaining bullets and create a new fleet
 			self.bullets.empty()
 			self._create_fleet()
+			# Change the speeds for the next round
+			self.settings.increase_speed()
+
 
 	def _ship_hit(self):
 		'''Responds to a ship being hit'''
@@ -144,6 +153,7 @@ class AlienInvasion:
 			sleep(0.5)
 		else:
 			self.stats.game_active = False
+			pygame.mouse.set_visible(True)
 
 	def _check_aliens_bottom(self):
 		'''Responds to aliens hitting the bottom of the screen'''
