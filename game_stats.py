@@ -14,3 +14,5 @@ class GameStats:
         '''Initialize stats that can be changed during the game'''
         # Adjust the number of ships left based on the ships limit in settings
         self.ships_left = self.settings.ship_limit
+
+        self.score = 0
