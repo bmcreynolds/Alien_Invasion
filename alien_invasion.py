@@ -134,6 +134,11 @@ class AlienInvasion:
 			self._create_fleet()
 			# Change the speeds for the next round
 			self.settings.increase_speed()
+		
+		# If an alien is hit, add the value of points per alien to score in stats, then edit the score being writting to the screen
+		if collions:			
+			self.stats.score += self.settings.alien_points
+			self.sb.prep_score()
 
 
 	def _ship_hit(self):

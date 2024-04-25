@@ -9,7 +9,6 @@ class Settings:
 		self.bg_color = (230, 230, 230)
 
 		"""Ship settings"""
-		self.ship_limit = 3
 
 		"""Bullet settings"""
 		self.bullet_width = 3
@@ -30,9 +29,13 @@ class Settings:
 	# Ship speed
 		self.ship_speed = 1
 	# Alien speed
-		self.alien_speed = 0.125
+		self.alien_speed = 1
 	# Bullet speed
 		self.bullet_speed = 2
+
+	# Player lives
+		self.ship_limit = 3
+
  
 	# Fleet direction (1 = right, -1 = left)
 		self.fleet_direction = 1
